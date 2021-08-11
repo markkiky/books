@@ -4,6 +4,7 @@ import { EmptyState } from '@pxblue/react-components';
 import Menu from '@material-ui/icons/Menu';
 import Event from '@material-ui/icons/Event';
 import { useDrawer } from '../contexts/drawerContextProvider';
+import { Table } from "../components/Table"
 
 const useStyles = makeStyles((theme) =>
     createStyles({
@@ -41,11 +42,7 @@ export const PageOne = () => {
                 </Toolbar>
             </AppBar>
             <div style={{ flex: '1 1 0px' }}>
-                <EmptyState
-                    icon={<Event fontSize={'inherit'} />}
-                    title={'Coming Soon'}
-                    description={'Replace this page with your own content'}
-                />
+                <Table></Table>
             </div>
         </div>
     );
