@@ -1,33 +1,24 @@
 import React from "react";
 import MaterialTable from "material-table";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from "@material-ui/icons/Edit"
 
-export const Table = () => {
-  const data = [
-    {
-      name: "Mark ",
-      age: 35,
-    },
-    {
-      name: "Kish ",
-      age: 24,
-    },
-    {
-      name: "Ndunug ",
-      age: 24,
-    },
-  ];
-  const column = [
-    { title: "Name", field: "name" },
-    { title: "Age", field: "age" },
-  ];
+export const Table = (props) => {
   return (
     <div>
       <MaterialTable
         title="Client Types"
-        data={data}
-        columns={column}
-        options={{search: true, paging: true, filtering: true, exportButton: true}}
-      ></MaterialTable>
+        data={props.data.client_types}
+        columns={props.columns}
+        options={props.options}
+        actions={props.actions}
+      >
+        
+      </MaterialTable>
+      <Button variant="contained" color="primary">
+          Primary
+        </Button>
     </div>
   );
 };
