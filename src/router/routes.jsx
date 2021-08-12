@@ -1,4 +1,4 @@
-import { HomePage, PageOne, PageTwo } from '../pages';
+import { HomePage, ClientTypes, PageTwo } from '../pages';
 import Home from '@material-ui/icons/Home';
 import LooksOne from '@material-ui/icons/LooksOne';
 import LooksTwo from '@material-ui/icons/LooksTwo';
@@ -11,9 +11,9 @@ export const PAGES = [
         icon: Home,
     },
     {
-        title: 'Page One',
-        route: '/page-one',
-        component: PageOne,
+        title: 'Client Types',
+        route: '/client_types',
+        component: ClientTypes,
         icon: LooksOne,
     },
     {

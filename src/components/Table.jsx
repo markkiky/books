@@ -8,17 +8,14 @@ export const Table = (props) => {
   return (
     <div>
       <MaterialTable
-        title="Client Types"
-        data={props.data.client_types}
+        title={props.title}
+        data={props.data}
         columns={props.columns}
         options={props.options}
         actions={props.actions}
       >
         
       </MaterialTable>
-      <Button variant="contained" color="primary">
-          Primary
-        </Button>
     </div>
   );
 };

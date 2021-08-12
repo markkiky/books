@@ -1,40 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useHistory, useLocation } from "react-router";
 import {
-  AppBar,
-  IconButton,
-  Hidden,
-  Toolbar,
-  Typography,
   createStyles,
   makeStyles,
   useTheme,
+  useMediaQuery,
 } from "@material-ui/core";
-import { EmptyState } from "@pxblue/react-components";
-import Menu from "@material-ui/icons/Menu";
-import Event from "@material-ui/icons/Event";
 import { useDrawer } from "../contexts/drawerContextProvider";
 import { Table } from "../components/Table";
 import axios from "axios";
 import { EditModal } from "../components/EditModal";
+import { Header } from "../components/Header";
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
-    toolbar: {
-      paddingLeft: theme.spacing(2),
-      paddingRight: theme.spacing(2),
-    },
-  })
-);
 
-export const PageOne = () => {
+export const ClientTypes = () => {
+  // theme manenos
   const theme = useTheme();
-  const classes = useStyles(theme);
   const { setDrawerOpen } = useDrawer();
 
+  // states
   const [client_types, setClientTypes] = useState([]);
   const [edit_modal, setEditModal] = useState(false);
   const [current_row, setRow] = useState({});
 
+  // navigation tings
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const history = useHistory();
+  const location = useLocation();
+  const [selected, setSelected] = useState(location.pathname);
+  const navigate = useCallback(
+    (id) => {
+      history.push(id);
+      setSelected(id);
+    },
+    [history, setSelected]
+  );
+
+  // datatable vibes
   const columns = [
     { title: "Id", field: "id" },
     { title: "Name", field: "name" },
@@ -47,7 +49,8 @@ export const PageOne = () => {
       icon: "visibility",
       tooltip: "show client type",
       onClick: (event, rowData) => {
-        debugger;
+        navigate(`/client_types/${rowData.id}`);
+        if (isMobile) setDrawerOpen(false);
       },
     },
     {
@@ -57,18 +60,11 @@ export const PageOne = () => {
         // Do edit operation
         showEditModal();
         setRow(rowData);
-        //   debugger
       },
     },
   ];
 
-  const closeOnEscapeKeyDown = (e) => {
-    if ((e.charCode || e.keyCode) === 27) {
-      hideEditModal();
-    }
-  };
-
-  //   allow escape key for modal exit
+  // allow escape key for modal exit
   useEffect(() => {
     document.body.addEventListener("keydown", closeOnEscapeKeyDown);
     return function cleanup() {
@@ -76,7 +72,7 @@ export const PageOne = () => {
     };
   }, []);
 
-  //   fetch client_types
+  // fetch client_types
   useEffect(() => {
     const apiUrl = "https://explorer.eu.ngrok.io/client_types";
     axios.get(apiUrl).then((response) => {
@@ -84,8 +80,8 @@ export const PageOne = () => {
       setClientTypes({ client_types });
     });
   }, []);
-  console.log(client_types);
 
+  // modal tings
   function showEditModal() {
     setEditModal(true);
   }
@@ -94,30 +90,19 @@ export const PageOne = () => {
     setEditModal(false);
   }
 
+  const closeOnEscapeKeyDown = (e) => {
+    if ((e.charCode || e.keyCode) === 27) {
+      hideEditModal();
+    }
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <AppBar position={"sticky"}>
-        <Toolbar className={classes.toolbar}>
-          <Hidden mdUp={true}>
-            <IconButton
-              color={"inherit"}
-              onClick={() => {
-                setDrawerOpen(true);
-              }}
-              edge={"start"}
-              style={{ marginRight: theme.spacing(3) }}
-            >
-              <Menu />
-            </IconButton>
-          </Hidden>
-          <Typography variant={"h6"} color={"inherit"}>
-            Client Types
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Header title="Client Types"></Header>
       <div style={{ flex: "1 1 0px" }}>
         <Table
-          data={client_types}
+          title="Client Types"
+          data={client_types.client_types}
           columns={columns}
           options={{
             search: true,

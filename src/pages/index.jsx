@@ -1,3 +1,3 @@
 export * from './home';
-export * from './pageOne';
+export * from './clientTypes';
 export * from './pageTwo';
